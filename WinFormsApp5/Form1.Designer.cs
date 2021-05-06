@@ -34,6 +34,9 @@ namespace WinFormsApp5
             this.tbTelefone = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.dgvClientes = new System.Windows.Forms.DataGridView();
+            this.btAtualizar = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).BeginInit();
             this.SuspendLayout();
             // 
             // btInserir
@@ -74,15 +77,36 @@ namespace WinFormsApp5
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(260, 58);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 15);
+            this.label2.Size = new System.Drawing.Size(54, 15);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Nome:";
+            this.label2.Text = "Telefone:";
+            // 
+            // dgvClientes
+            // 
+            this.dgvClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvClientes.Location = new System.Drawing.Point(120, 214);
+            this.dgvClientes.Name = "dgvClientes";
+            this.dgvClientes.RowTemplate.Height = 25;
+            this.dgvClientes.Size = new System.Drawing.Size(331, 224);
+            this.dgvClientes.TabIndex = 5;
+            // 
+            // btAtualizar
+            // 
+            this.btAtualizar.Location = new System.Drawing.Point(120, 172);
+            this.btAtualizar.Name = "btAtualizar";
+            this.btAtualizar.Size = new System.Drawing.Size(75, 23);
+            this.btAtualizar.TabIndex = 6;
+            this.btAtualizar.Text = "Atualizar";
+            this.btAtualizar.UseVisualStyleBackColor = true;
+            this.btAtualizar.Click += new System.EventHandler(this.btAtualizar_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btAtualizar);
+            this.Controls.Add(this.dgvClientes);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbTelefone);
@@ -90,6 +114,7 @@ namespace WinFormsApp5
             this.Controls.Add(this.btInserir);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,6 +127,8 @@ namespace WinFormsApp5
         private System.Windows.Forms.TextBox tbTelefone;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dgvClientes;
+        private System.Windows.Forms.Button btAtualizar;
     }
 }
 
