@@ -98,5 +98,89 @@ namespace WinFormsApp5
                 else MessageBox.Show("Erro ao buscar!");
             }
         }
+
+        private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvClientes.SelectedCells.Count > 0)
+            {
+                int linhaSelecionada = dgvClientes.SelectedCells[0].RowIndex;
+                //string idCliente = dgvClientes.Rows[i].Cells[0].Value.ToString();
+
+                gbInserirBuscar.Enabled = false;
+                gbEditarExcluir.Enabled = true;
+
+                tbNomeEditar.Text = dgvClientes.Rows[linhaSelecionada].Cells[1].Value.ToString();
+                tbTelefoneEditar.Text = dgvClientes.Rows[linhaSelecionada].Cells[2].Value.ToString();
+            }
+
+        }
+
+        private void btExcluir_Click(object sender, EventArgs e)
+        {
+            int i = 0;
+            try
+            {
+                int linhaSelecionada = dgvClientes.SelectedCells[0].RowIndex;
+                int idCliente = (int)dgvClientes.Rows[linhaSelecionada].Cells[0].Value;
+                i = BD.ExcluirCliente(idCliente);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Erro ao excluir!");
+            }
+            finally
+            {
+                if (i > 0)
+                {
+                    MessageBox.Show($"Exclusão efetuada com sucesso!");
+                    tbNomeEditar.Text = "";
+                    tbTelefoneEditar.Text = "";
+                    gbInserirBuscar.Enabled = true;
+                    gbEditarExcluir.Enabled = false;
+                    dgvClientes.ClearSelection();
+                }
+                else MessageBox.Show("Erro ao excluir!");
+            }
+            Atualizar();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            dgvClientes.ClearSelection();
+            gbEditarExcluir.Enabled = false;
+            gbInserirBuscar.Enabled = true;
+            tbNomeEditar.Text = "";
+            tbTelefoneEditar.Text = "";
+        }
+
+        private void btEditar_Click(object sender, EventArgs e)
+        {
+            int i = 0;
+            try
+            {
+                int linhaSelecionada = dgvClientes.SelectedCells[0].RowIndex;
+                int idCliente = (int)dgvClientes.Rows[linhaSelecionada].Cells[0].Value;
+                i = BD.EditarCliente(idCliente, 
+                    new Cliente(tbNomeEditar.Text, tbTelefoneEditar.Text));
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Erro ao editar!");
+            }
+            finally
+            {
+                if (i > 0)
+                {
+                    MessageBox.Show($"Edição efetuada com sucesso!");
+                    tbNomeEditar.Text = "";
+                    tbTelefoneEditar.Text = "";
+                    gbInserirBuscar.Enabled = true;
+                    gbEditarExcluir.Enabled = false;
+                    dgvClientes.ClearSelection();
+                }
+                else MessageBox.Show("Erro ao editar!");
+            }
+            Atualizar();
+        }
     }
 }

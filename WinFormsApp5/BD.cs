@@ -26,29 +26,56 @@ namespace WinFormsApp5
             conexao.Close();
             return i;
         }
+        public static int Executar()
+        {
+            return Executar(out SqlDataAdapter adaptador);
+        }
         public static int InserirCliente(Cliente c)
         {
+            sql = new SqlCommand();
             sql.CommandText = "INSERT INTO Clientes (Nome, Telefone) VALUES (@nome,@telefone)";
             sql.Parameters.AddWithValue("@nome", c.Nome);
             sql.Parameters.AddWithValue("@telefone", c.Telefone);
-            int linhasAfetadas = Executar(out SqlDataAdapter adaptador);
+            int linhasAfetadas = Executar();
             return linhasAfetadas;
         }
 
         public static SqlDataAdapter SelectClientes()
         {
-            sql.CommandText = "SELECT Nome, Telefone FROM Clientes";
+            sql = new SqlCommand();
+            sql.CommandText = "SELECT * FROM Clientes";
             Executar(out SqlDataAdapter adaptador);
             return adaptador;
         }
 
         public static SqlDataAdapter BuscarClientePorTelefone(string telefone)
         {
-            sql.CommandText = $"SELECT Nome, Telefone FROM Clientes " +
+            sql = new SqlCommand();
+            sql.CommandText = $"SELECT * FROM Clientes " +
                 $"WHERE Telefone LIKE '%{telefone}%'";
             int linhasAfetadas = Executar(out SqlDataAdapter adaptador);
             return adaptador;
         }
 
+        public static int ExcluirCliente(int id)
+        {
+            sql = new SqlCommand();
+            sql.CommandText = $"DELETE FROM Clientes " +
+                $"WHERE idCliente = {id}";
+            int linhasAfetadas = Executar();
+            return linhasAfetadas;
+        }
+
+        public static int EditarCliente(int id, Cliente c)
+        {
+            sql = new SqlCommand();
+            sql.CommandText = "UPDATE Clientes SET Nome = @nome, Telefone = @telefone  " +
+                "WHERE idCliente = @id";
+            sql.Parameters.AddWithValue("@nome", c.Nome);
+            sql.Parameters.AddWithValue("@telefone", c.Telefone);
+            sql.Parameters.AddWithValue("@id", id);
+            int linhasAfetadas = Executar();
+            return linhasAfetadas;
+        }
     }
 }
