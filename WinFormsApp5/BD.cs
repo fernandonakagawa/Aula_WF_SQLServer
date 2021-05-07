@@ -69,11 +69,15 @@ namespace WinFormsApp5
         public static int EditarCliente(int id, Cliente c)
         {
             sql = new SqlCommand();
-            sql.CommandText = "UPDATE Clientes SET Nome = @nome, Telefone = @telefone  " +
+            /*sql.CommandText = "UPDATE Clientes SET Nome = @nome, Telefone = @telefone  " +
                 "WHERE idCliente = @id";
             sql.Parameters.AddWithValue("@nome", c.Nome);
             sql.Parameters.AddWithValue("@telefone", c.Telefone);
             sql.Parameters.AddWithValue("@id", id);
+        
+            */
+            sql.CommandText = $"UPDATE Clientes Set Nome = '{c.Nome}', Telefone = '{c.Telefone}' " +
+                $"WHERE idCliente = {id}";
             int linhasAfetadas = Executar();
             return linhasAfetadas;
         }
