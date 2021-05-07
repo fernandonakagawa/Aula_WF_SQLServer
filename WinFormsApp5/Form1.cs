@@ -13,34 +13,34 @@ namespace WinFormsApp5
 {
     public partial class Form1 : Form
     {
-        SqlConnection conexao;
+        
 
         public Form1()
         {
             InitializeComponent();
-            conexao = new SqlConnection();
-            conexao.ConnectionString = @"Data Source=(local)\SQLEXPRESS;Initial Catalog=Aula;Integrated Security=True";
         }
 
         private void btInserir_Click(object sender, EventArgs e)
         {
-            SqlCommand sql = new SqlCommand();
-            sql.Connection = conexao;
-            sql.CommandText = "INSERT INTO Clientes (Nome, Telefone) VALUES (@nome,@telefone)";
-            sql.Parameters.AddWithValue("@nome", tbNome.Text);
-            sql.Parameters.AddWithValue("@telefone", tbTelefone.Text);
-
-            conexao.Open();
-            int i = sql.ExecuteNonQuery();
-            conexao.Close();
-            if (i > 0)
+            int i = 0;
+            try
             {
-                MessageBox.Show($"Cadastro de {tbNome.Text} efetuado com sucesso!");
-                tbNome.Text = "";
-                tbTelefone.Text = "";
+                i = BD.InserirCliente(new Cliente(tbNome.Text, tbTelefone.Text));
             }
-            else MessageBox.Show("Erro ao cadastrar!");
-
+            catch (Exception exception)
+            {
+                MessageBox.Show("Erro ao cadastrar!");
+            }
+            finally
+            {
+                if (i > 0)
+                {
+                    MessageBox.Show($"Cadastro de {tbNome.Text} efetuado com sucesso!");
+                    tbNome.Text = "";
+                    tbTelefone.Text = "";
+                }
+                else MessageBox.Show("Erro ao cadastrar!");
+            }
             Atualizar();
         }
 
@@ -51,27 +51,51 @@ namespace WinFormsApp5
 
         private void Atualizar()
         {
-            SqlCommand sql = new SqlCommand();
-            sql.Connection = conexao;
-            sql.CommandText = "SELECT Nome, Telefone FROM Clientes";
-
+            lbTabela.Text = "Clientes:";
+            SqlDataAdapter adaptador = null;
             try
             {
-                conexao.Open();
-                int i = sql.ExecuteNonQuery();
-                SqlDataAdapter adaptador = new SqlDataAdapter(sql.CommandText, conexao);
-                DataTable tabela = new DataTable();
-                adaptador.Fill(tabela);
-                dgvClientes.DataSource = tabela;
-                dgvClientes.ClearSelection();
+                adaptador = BD.SelectClientes();
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
-                MessageBox.Show(exception.ToString());
+                MessageBox.Show("Erro ao buscar!");
             }
             finally
             {
-                conexao.Close();              
+                if (adaptador != null)
+                {
+                    DataTable tabela = new DataTable();
+                    adaptador.Fill(tabela);
+                    dgvClientes.DataSource = tabela;
+                    dgvClientes.ClearSelection();
+                }
+                else MessageBox.Show("Erro ao buscar!");
+            }
+        }
+
+        private void btBuscarTelefone_Click(object sender, EventArgs e)
+        {
+            lbTabela.Text = "Busca por TELEFONE:";
+            SqlDataAdapter adaptador = null;
+            try
+            {
+                adaptador = BD.BuscarClientePorTelefone(tbTelefone.Text);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Erro ao buscar!");
+            }
+            finally
+            {
+                if (adaptador != null)
+                {
+                    DataTable tabela = new DataTable();
+                    adaptador.Fill(tabela);
+                    dgvClientes.DataSource = tabela;
+                    dgvClientes.ClearSelection();
+                }
+                else MessageBox.Show("Erro ao buscar!");
             }
         }
     }
